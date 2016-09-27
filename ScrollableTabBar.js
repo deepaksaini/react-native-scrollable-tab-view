@@ -123,23 +123,18 @@ const ScrollableTabBar = React.createClass({
 
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
+  // const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+   const fontWeight = isTabActive ? 'bold' : 'normal';
+   const textColor = isTabActive ? styles.selectedTabText : styles.tabText;
 
-    return <Button
-      key={`${name}_${page}`}
-      accessible={true}
-      accessibilityLabel={name}
-      accessibilityTraits='button'
-      onPress={() => onPressHandler(page)}
-      onLayout={onLayoutHandler}
-    >
-      <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
-      </View>
-    </Button>;
+   return <View style={[styles.tab, this.props.tabStyle, ]}>
+     <TouchableOpacity onPress={() => this.props.goToPage(page)}
+                       style={ isTabActive ? styles.tabLayout : styles.tabNormalLayout}>
+       <Text style={textColor}>
+         {name}
+       </Text>
+     </TouchableOpacity>
+   </View>;
   },
 
   measureTab(page, event) {
@@ -229,10 +224,38 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: '#ccc',
+    borderBottomColor: '#ccc',
   },
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  tabLayout: {
+    height: 30,
+    borderColor: '#333333',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 4,
+    backgroundColor: '#fc4858'
+  },
+  tabNormalLayout: {
+    height: 30,
+    borderColor: '#333333',
+    borderWidth: 0,
+    borderRadius: 5,
+    padding: 4,
+  },
+  selectedTabText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 5
+  },
+  tabText: {
+    color: '#7b7b7b',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
